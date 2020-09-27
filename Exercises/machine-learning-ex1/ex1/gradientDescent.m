@@ -16,17 +16,37 @@ for iter = 1:num_iters
     % Hint: While debugging, it can be useful to print out the values
     %       of the cost function (computeCost) and gradient here.
     %
-
-
-
-
-
-
-
+  fprintf('iter ... \n');
+  fprintf('%f\n', iter);
+  
+  summa = sum((X*theta - y).*X)
+  fprintf('summa ... \n');
+  fprintf('%f\n', summa);
+  
+  delta = (alpha/length(y))*(summa)
+  fprintf('delta ... \n');
+  fprintf('%f\n', delta);
+  fprintf('delta size ... \n');
+  fprintf('%f\n', size(delta));
+  
+  fprintf('theta before... \n');
+  fprintf('%f\n', theta);
+  fprintf('theta before size ... \n');
+  fprintf('%f\n', size(theta));
+  
+	theta = theta - delta';
+	fprintf('theta after... \n');
+  fprintf('%f\n', theta);
+  fprintf('theta after size ... \n');
+  fprintf('%f\n', size(theta));
+  
+  costs = computeCost(X, y, theta);
+  fprintf('costs ... \n');
+  fprintf('%f\n', costs);
     % ============================================================
 
     % Save the cost J in every iteration    
-    J_history(iter) = computeCost(X, y, theta);
+    J_history(iter) = costs;
 
 end
 
