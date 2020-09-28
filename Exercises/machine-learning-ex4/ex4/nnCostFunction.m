@@ -62,22 +62,34 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+X = [ones(m, 1) X];
+Z2 = sigmoid(X*Theta1');
+mz = size(Z2, 1);
+Z2 = [ones(mz, 1) Z2];
+pr = sigmoid(Z2*Theta2');
+c=1;
 
+for c = 1:num_labels
+  
+  pr_adj=pr(:,c);
+  
+  Left = -(y==c).*log(pr_adj);
+  Right = (1 - (y==c)).*log(1-(pr_adj));
 
+  J = J + (1/m)*sum(Left - Right);
+  
+  fprintf(['Cost at c=: %f\n'], round(c));
+  fprintf(['Cost at parameters (loaded from ex4weights): %f\n'], J);
+  
+end 
 
+JReg = (lambda/(2*m))*(sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
+J = J + JReg;
 
-
-
-
-
-
-
-
-
-
-
-
-
+%grad = (1/m)*sum((sigmoid(X * theta)-y).* X);
+%grad_reg = (lambda/m)*theta;
+%grad_reg(1) = 0;
+%grad = grad + grad_reg';
 
 
 % -------------------------------------------------------------
