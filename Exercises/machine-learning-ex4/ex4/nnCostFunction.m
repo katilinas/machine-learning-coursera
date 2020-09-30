@@ -86,11 +86,36 @@ end
 JReg = (lambda/(2*m))*(sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
 J = J + JReg;
 
-%grad = (1/m)*sum((sigmoid(X * theta)-y).* X);
-%grad_reg = (lambda/m)*theta;
-%grad_reg(1) = 0;
-%grad = grad + grad_reg';
+for t = 1:m
+  Xt=X(t,:);
+  
+  Z2t=Xt*Theta1';
+  A2t = sigmoid(Z2t);
+  A2t = [1 A2t];
+  
+  Z3t=A2t*Theta2';
+  A3t = sigmoid(Z3t);
+  
+  yt = [1:num_labels]==y(t);
+  
+  d3 = A3t-yt;
+  d2 = d3*Theta2(:,2:end).*sigmoidGradient(Z2t);
+  
+  Theta2_add = d3'*A2t;
+  Theta1_add = d2'*Xt;
+  
+  Theta2_grad = Theta2_grad + Theta2_add;
+  Theta1_grad = Theta1_grad + Theta1_add;
+  
+  %fprintf(['Theta2_grad=: %f\n'], size(Theta2_grad));
+  %fprintf(['Theta2_grad (add)=: %f\n'], size(d3'*A2t));
+  %%fprintf(['Theta1_grad=: %f\n'], size(Theta1_grad));
+  %fprintf(['Theta1_grad (add)=: %f\n'], size(d2'*Xt));
+  %pause;
+endfor
 
+Theta1_grad = (1/m) * Theta1_grad;
+Theta2_grad = (1/m) * Theta2_grad;
 
 % -------------------------------------------------------------
 
