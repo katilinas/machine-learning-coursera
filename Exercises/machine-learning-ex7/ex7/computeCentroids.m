@@ -26,7 +26,11 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
+for i = 1:K
+  X_cent = X(idx==i,:);
+  m_cent = size(X_cent,1);
+  centroids(i, :) = (sum(X_cent))/m_cent;
+endfor
 
 
 
